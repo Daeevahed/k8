@@ -1,0 +1,24 @@
+https://github.com/containerd/containerd/releases/download/v1.6.2/containerd-1.6.2-linux-amd64.tar.gz
+sudo tar Czxvf /usr/local containerd-1.6.2-linux-amd64.tar.gz
+Systemd Service: https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
+sudo mv containerd.service /usr/lib/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now containerd
+sudo systemctl status containerd
+runc:
+https://github.com/opencontainers/runc/releases/download/v1.1.1/runc.amd64
+sudo install -m 755 runc.amd64 /usr/local/sbin/runc
+
+
+sudo mkdir -p /etc/containerd/
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+Sudo Kubeadm init
